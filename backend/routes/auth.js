@@ -13,7 +13,7 @@ router.post("/register", async (req, res) => {
         const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
             expiresIn: "1h",
           });
-        return res.json({ token });
+        return res.json({ user });
         
     }
     catch (err) {
