@@ -1,6 +1,7 @@
 const bodyParser = require("body-parser");
 const express = require("express");
 const mongoose = require("mongoose");
+const authMiddleware = require("./middleware/auth");
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -34,8 +35,8 @@ const menuRoutes = require("./routes/menu");
 const orderRoutes = require("./routes/order");
 
 app.use("/auth", authRoutes);
-app.use("/menu", menuRoutes);
-app.use("/", orderRoutes);
+app.use("/menu", authMiddleware, menuRoutes);
+app.use("/", authMiddleware, orderRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

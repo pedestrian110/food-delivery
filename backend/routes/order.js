@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/user");
 const Menu = require("../models/menu");
 const Order = require("../models/order");
+const authorder = require("../middleware/authorder");
 
 router.post("/order", async (req, res) => {
     try {
@@ -33,12 +34,12 @@ router.post("/order", async (req, res) => {
 });
 
 router.get("/orders", async (req, res) => {
-    try {
-        const orders = await Order.find().populate('userId', 'username').populate('items.menuItem', 'name price');
-        res.json(orders);
-      } catch (err) {
-        res.status(500).json({ message: err.message });
-      }
+  try {
+    const orders = await Order.find({userId: req.userId}).populate('userId', 'username').populate('items.menuItem', 'name price');
+    res.json(orders);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 module.exports = router;
